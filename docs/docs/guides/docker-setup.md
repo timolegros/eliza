@@ -50,28 +50,40 @@ This guide provides instructions for installing and running the Eliza chatbot us
     sudo apt-get update
     sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
     ```
+   
+2. **Setup Docker**
+    ```bash
+    # Start the Docker Daemon
+    sudo systemctl start docker
+   
+    # Add your user to the docker group to allow non-root access to Docker
+    sudo usermod -aG docker $USER
+   
+    # Reload groups
+    newgrp docker
+    ```
 
-2. **Clone the Repository**:
+3. **Clone the Repository**:
 
     ```bash
     git clone https://github.com/YOUR_USERNAME/eliza.git
     cd eliza
     ```
 
-3. **Configure Environment**:
+4. **Configure Environment**:
 
     ```bash
     cp .env.example .env
     ```
 
-4. **Fix Unix Script Issues** (if needed):
+5. **Fix Unix Script Issues** (if needed):
 
     ```bash
     apt install dos2unix
     dos2unix ./scripts/*
     ```
 
-5. **Run with Docker**:
+6. **Run with Docker**:
     ```bash
     pnpm docker
     ```
@@ -112,10 +124,9 @@ This guide provides instructions for installing and running the Eliza chatbot us
 
 - Remove All Docker Images
     - Run the following command to delete all images:
-
-```bash
-docker rmi -f $(docker images -aq)
-```
+    ```bash
+    docker rmi -f $(docker images -aq)
+    ```
 
 - Remove All Build Cache
     - To clear the build cache entirely, use:
@@ -124,10 +135,9 @@ docker rmi -f $(docker images -aq)
     ```
 - Verify Cleanup
     - Check Docker disk usage again to ensure everything is removed:
-
-```bash
-docker system df
-```
+    ```bash
+    docker system df
+    ```
 
 ## License
 
