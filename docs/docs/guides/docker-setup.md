@@ -25,7 +25,7 @@ This guide provides instructions for installing and running the Eliza chatbot us
 3. **Install PNPM**:
     ```bash
     curl -fsSL https://get.pnpm.io/install.sh | sh -
-    source /root/.bashrc
+    source /home/ubuntu/.bashrc
     ```
 
 ## Docker Installation
