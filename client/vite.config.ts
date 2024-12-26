@@ -27,6 +27,7 @@ export default defineConfig({
         },
     },
     server: {
+        host: process.env.PUBLIC_CHAT_CLIENT_HOST === 'true' ? '0.0.0.0' : 'localhost',
         proxy: {
             "/api": {
                 target: `http://localhost:${process.env.SERVER_PORT || 3000}`,
