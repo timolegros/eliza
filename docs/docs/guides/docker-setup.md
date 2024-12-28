@@ -120,7 +120,6 @@ This guide provides instructions for installing and running the Eliza chatbot us
 
 ## Troubleshooting
 
-- If the container fails to start due to a dependency issue, install
 - If Docker container fails to start, check logs:
     ```bash
     docker logs eliza
