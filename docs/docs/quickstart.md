@@ -46,23 +46,21 @@ Before getting started with Eliza, ensure you have:
     pnpm install --no-frozen-lockfile
     ```
 
-    # Quickstart Guide Update
+    ### Important Note on pnpm Lockfile Management
 
-**Important Note on pnpm Lockfile Management**
+   By default, the `pnpm` lockfile will not be updated during installations based off of .npmrc frozen-lockfile=true. To update the lockfile, you need to run the command:
 
-By default, the `pnpm` lockfile will not be updated during installations based off of .npmrc frozen-lockfile=true. To update the lockfile, you need to run the command:
+    ```bash
+    pnpm install --no-frozen-lockfile
+    ```
 
-```bash
-pnpm install --no-frozen-lockfile
-```
+   Please only use this command when you initially instantiating the repo or are bumping the version of a package or adding a new package to your package.json. This practice helps maintain consistency in your project's dependencies and prevents unintended changes to the lockfile.
 
-Please only use this command when you initially instantiating the repo or are bumping the version of a package or adding a new package to your package.json. This practice helps maintain consistency in your project's dependencies and prevents unintended changes to the lockfile.
-
-Build the local libraries
-
-```bash
-pnpm build
-```
+    Build the local libraries
+    
+    ```bash
+    pnpm build
+    ```
 
 2. **Configure Environment**
 
@@ -147,20 +145,21 @@ You set which model to use inside the character JSON file
 
     Once the client is running, you'll see a message like this:
 
-```
-➜  Local:   http://localhost:5173/
-```
-
-Simply click the link or open your browser to `http://localhost:5173/`. You'll see the chat interface connect to the system, and you can begin interacting with your character.
+    ```
+    ➜  Local:   http://localhost:5173/
+    ```
+    
+    Simply click the link or open your browser to `http://localhost:5173/`. You'll see the chat interface connect to the system, and you can begin interacting with your character.
 
 ## Platform Integration
 
 ### Discord Bot Setup
 
 1. Create a new application at [Discord Developer Portal](https://discord.com/developers/applications)
-2. Create a bot and get your token
-3. Add bot to your server using OAuth2 URL generator
-4. Set `DISCORD_API_TOKEN` and `DISCORD_APPLICATION_ID` in your `.env`
+2. Create a bot and get your token ([see docs](https://discordjs.guide/preparations/setting-up-a-bot-application.html#creating-your-bot))
+   - Ensure that "Message Content Intent" toggle is enabled under "Privileged Gateway Intents"
+3. Set `DISCORD_API_TOKEN` (the bot token) and `DISCORD_APPLICATION_ID` in your `.env`
+4. Add your bot to your Discord server using the URL logged in the console when you start an agent with the Discord client enabled.
 
 ### Twitter Integration
 
