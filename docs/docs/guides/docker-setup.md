@@ -11,7 +11,7 @@ This guide provides instructions for installing and running the Eliza chatbot us
 1. **Install NVM**:
 
     ```bash
-    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
     source ~/.bashrc
     nvm install v23.3.0
     ```
@@ -29,6 +29,7 @@ This guide provides instructions for installing and running the Eliza chatbot us
     ```
 
 4. **Install Dependencies**
+    See https://github.com/elizaOS/eliza/issues/1460
     ```bash
     pnpm install --no-frozen-lockfile
     ```
