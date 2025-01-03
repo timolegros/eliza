@@ -1,7 +1,7 @@
 import { Character, elizaLogger, IAgentRuntime, Client } from "@elizaos/core";
 import { validateCommonConfig } from "./environment.ts";
 import express, { Request, Response, NextFunction } from "express";
-import { CommonApiClient } from "@commonxyz/api-client";
+import {CommonApiClient, CommonApiEnvironment} from "@commonxyz/api-client";
 import { z } from "zod";
 import type { Server } from "http";
 import {AgentMentionedSchema, AugmentedAgentMentionedSchema, CommonEnvSchema} from "./schemas.ts";
@@ -28,6 +28,7 @@ export class CommonClient {
         this.config = validateCommonConfig(this.runtime);
 
         this.commonApiClient = new CommonApiClient({
+            environment: this.config.COMMON_API_URL || CommonApiEnvironment.Default,
             apiKey: this.config.COMMON_API_KEY,
             address: this.config.COMMON_WALLET_ADDRESS,
         });
@@ -40,7 +41,7 @@ export class CommonClient {
 
             // TODO: fetch user once Common Api Client is published with the new route
             // const user = await this.commonApiClient.User.getUser();
-            const user = { id: 121273, profile: { name: "temp" } };
+            const user = { id: 161400, profile: { name: "Eliza Dev 1" } };
             this.commonUserId = user.id;
             this.messageManager = new MessageManager(this.commonApiClient, this.runtime, this.commonUserId);
 

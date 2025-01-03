@@ -111,6 +111,9 @@ importers:
       '@elizaos/client-auto':
         specifier: workspace:*
         version: link:../packages/client-auto
+      '@elizaos/client-common':
+        specifier: workspace:*
+        version: link:../packages/client-common
       '@elizaos/client-direct':
         specifier: workspace:*
         version: link:../packages/client-direct
