@@ -1,5 +1,6 @@
 import {CommonApiClient} from "@commonxyz/api-client";
 import {
+    Clients,
     composeContext, Content,
     elizaLogger, generateMessageResponse,
     generateShouldRespond,
@@ -131,7 +132,7 @@ export class MessageManager {
             roomId,
             undefined,
             message.profile_name,
-            "Common"
+            Clients.COMMON
         );
 
         const memory: Memory = {
@@ -141,7 +142,7 @@ export class MessageManager {
             agentId: this.runtime.agentId,
             content: {
                 text: message.full_object_text,
-                source: "Common",
+                source: Clients.COMMON,
                 url: message.object_url,
                 // TODO: inReplyTo: undefined,
             },
@@ -188,7 +189,7 @@ export class MessageManager {
             agentId: this.runtime.agentId,
             content: {
                 text: res.body,
-                source: "Common",
+                source: Clients.COMMON,
                 content_url: res.content_url,
             },
             createdAt: new Date(res.created_at).getTime(),

@@ -7,6 +7,7 @@ import { LensAgentClient } from "@elizaos/client-lens";
 import { SlackClientInterface } from "@elizaos/client-slack";
 import { TelegramClientInterface } from "@elizaos/client-telegram";
 import { TwitterClientInterface } from "@elizaos/client-twitter";
+import { CommonClientInterface } from '@elizaos/client-common';
 import {
     AgentRuntime,
     CacheManager,
@@ -413,6 +414,13 @@ export async function initializeClients(
         const twitterClient = await TwitterClientInterface.start(runtime);
         if (twitterClient) {
             clients.twitter = twitterClient;
+        }
+    }
+
+    if (clientTypes.includes(Clients.COMMON)) {
+        const commonClient = await CommonClientInterface.start(runtime);
+        if (commonClient) {
+            clients.common = commonClient;
         }
     }
 

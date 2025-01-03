@@ -1,4 +1,4 @@
-import { Character, elizaLogger, IAgentRuntime } from "@elizaos/core";
+import { Character, elizaLogger, IAgentRuntime, Client } from "@elizaos/core";
 import { validateCommonConfig } from "./environment.ts";
 import express, { Request, Response, NextFunction } from "express";
 import { CommonApiClient } from "@commonxyz/api-client";
@@ -154,5 +154,16 @@ export class CommonClient {
                 });
             });
         }
+    }
+}
+
+// TODO: add error handling
+export const CommonClientInterface: Client = {
+    start: async (runtime: IAgentRuntime) => {
+        const client = new CommonClient(runtime);
+        await client.start();
+    },
+    stop: async (runtime: IAgentRuntime) => {
+        await runtime.clients.common.stop();
     }
 }
