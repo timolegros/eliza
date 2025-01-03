@@ -678,10 +678,9 @@ export class AgentRuntime implements IAgentRuntime {
     /**
      * Ensure the existence of a user in the database. If the user does not exist, they are added to the database.
      * @param userId - The user ID to ensure the existence of.
-     * @param userName - The user name to ensure the existence of.
+     * @param userName - The username to ensure the existence of.
      * @returns
      */
-
     async ensureUserExists(
         userId: UUID,
         userName: string | null,
@@ -751,7 +750,7 @@ export class AgentRuntime implements IAgentRuntime {
     /**
      * Ensure the existence of a room between the agent and a user. If no room exists, a new room is created and the user
      * and agent are added as participants. The room ID is returned.
-     * @param userId - The user ID to create a room with.
+     * @param roomId - The ID of the room to find or create.
      * @returns The room ID of the room between the agent and the user.
      * @throws An error if the room cannot be created.
      */

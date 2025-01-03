@@ -1,13 +1,8 @@
 import { elizaLogger, IAgentRuntime } from "@elizaos/core";
 import { z } from "zod";
+import {CommonEnvSchema} from "./schemas.ts";
 
-export const commonEnvSchema = z.object({
-    COMMON_API_KEY: z.string().min(1, "Common API key is required"),
-});
-
-export type CommonConfig = z.infer<typeof commonEnvSchema>;
-
-export async function validateCommonConfig(runtime: IAgentRuntime) {
+export function validateCommonConfig(runtime: IAgentRuntime) {
     try {
         elizaLogger.debug(
             "Validating Common configuration with runtime settings"
@@ -18,7 +13,7 @@ export async function validateCommonConfig(runtime: IAgentRuntime) {
                 process.env.COMMON_API_KEY,
         };
         elizaLogger.debug("Parsing configuration with schema", config);
-        const validated = commonEnvSchema.parse(config);
+        const validated = CommonEnvSchema.parse(config);
         elizaLogger.debug("Configuration validated successfully");
         return validated;
     } catch (error) {

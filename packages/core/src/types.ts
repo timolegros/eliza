@@ -687,6 +687,8 @@ export type Character = {
         discordMessageHandlerTemplate?: string;
         slackMessageHandlerTemplate?: string;
         slackShouldRespondTemplate?: string;
+        commonShouldRespondTemplate?: string;
+        commonMessageHandlerTemplate?: string;
     };
 
     /** Character biography */
