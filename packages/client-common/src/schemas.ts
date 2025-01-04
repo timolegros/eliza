@@ -6,7 +6,7 @@ export const CommonEnvSchema = z.object({
         .string()
         .min(1, "Common wallet address is required"),
     COMMON_API_URL: z.string().optional(),
-    COMMON_API_PORT: z.coerce.number().optional().default(3001),
+    COMMON_WEBHOOK_PORT: z.coerce.number().optional().default(3001),
     COMMON_WEBHOOK_SIGNING_KEY: z
         .string()
         .optional()

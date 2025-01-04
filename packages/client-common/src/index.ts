@@ -62,12 +62,12 @@ export class CommonClient {
 
             this.app.post(webhookPath, this._handleMention.bind(this));
 
-            this.server = this.app.listen(this.config.COMMON_API_PORT, () => {
+            this.server = this.app.listen(this.config.COMMON_WEBHOOK_PORT, () => {
                 elizaLogger.success(
-                    `🚀 [SERVER] Common webhook server is running on port ${this.config.COMMON_API_PORT}`
+                    `🚀 [SERVER] Common webhook server is running on port ${this.config.COMMON_WEBHOOK_PORT}`
                 );
                 elizaLogger.success(
-                    `   Webhook URL: http://localhost:${this.config.COMMON_API_PORT}${webhookPath}`
+                    `   Webhook URL: http://localhost:${this.config.COMMON_WEBHOOK_PORT}${webhookPath}`
                 );
                 elizaLogger.success(
                     `✅ [INIT] Common client successfully started for character ${this.character.name}`
