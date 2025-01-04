@@ -1,11 +1,15 @@
 import { Character, elizaLogger, IAgentRuntime, Client } from "@elizaos/core";
 import { validateCommonConfig } from "./environment.ts";
 import express, { Request, Response, NextFunction } from "express";
-import {CommonApiClient, CommonApiEnvironment} from "@commonxyz/api-client";
+import { CommonApiClient, CommonApiEnvironment } from "@commonxyz/api-client";
 import { z } from "zod";
 import type { Server } from "http";
-import {AgentMentionedSchema, AugmentedAgentMentionedSchema, CommonEnvSchema} from "./schemas.ts";
-import {MessageManager} from "./messages.ts";
+import {
+    AgentMentionedSchema,
+    AugmentedAgentMentionedSchema,
+    CommonEnvSchema,
+} from "./schemas.ts";
+import { MessageManager } from "./messages.ts";
 
 // Ensures errors are always handled in async express route handlers
 import "express-async-errors";
@@ -28,7 +32,8 @@ export class CommonClient {
         this.config = validateCommonConfig(this.runtime);
 
         this.commonApiClient = new CommonApiClient({
-            environment: this.config.COMMON_API_URL || CommonApiEnvironment.Default,
+            environment:
+                this.config.COMMON_API_URL || CommonApiEnvironment.Default,
             apiKey: this.config.COMMON_API_KEY,
             address: this.config.COMMON_WALLET_ADDRESS,
         });
@@ -41,9 +46,13 @@ export class CommonClient {
 
             // TODO: fetch user once Common Api Client is published with the new route
             // const user = await this.commonApiClient.User.getUser();
-            const user = { id: 161400, profile: { name: "Eliza Dev 1" } };
+            const user = { id: 161416, profile: { name: "Eliza Dev 1" } };
             this.commonUserId = user.id;
-            this.messageManager = new MessageManager(this.commonApiClient, this.runtime, this.commonUserId);
+            this.messageManager = new MessageManager(
+                this.commonApiClient,
+                this.runtime,
+                this.commonUserId
+            );
 
             const webhookPath = `/eliza/${user.id}`;
 
@@ -62,20 +71,29 @@ export class CommonClient {
 
             this.app.post(webhookPath, this._handleMention.bind(this));
 
-            this.server = this.app.listen(this.config.COMMON_WEBHOOK_PORT, () => {
-                elizaLogger.success(
-                    `🚀 [SERVER] Common webhook server is running on port ${this.config.COMMON_WEBHOOK_PORT}`
-                );
-                elizaLogger.success(
-                    `   Webhook URL: http://localhost:${this.config.COMMON_WEBHOOK_PORT}${webhookPath}`
-                );
-                elizaLogger.success(
-                    `✅ [INIT] Common client successfully started for character ${this.character.name}`
-                );
-                elizaLogger.success(
-                    `   Interact by mentioning @${user.profile.name} in threads or comments`
-                );
+            this.app.get(webhookPath, (req: Request, res: Response) => {
+                res.status(200).send({
+                    message: "Success",
+                });
             });
+
+            this.server = this.app.listen(
+                this.config.COMMON_WEBHOOK_PORT,
+                () => {
+                    elizaLogger.success(
+                        `🚀 [SERVER] Common webhook server is running on port ${this.config.COMMON_WEBHOOK_PORT}`
+                    );
+                    elizaLogger.success(
+                        `   Webhook URL: http://localhost:${this.config.COMMON_WEBHOOK_PORT}${webhookPath}`
+                    );
+                    elizaLogger.success(
+                        `✅ [INIT] Common client successfully started for character ${this.character.name}`
+                    );
+                    elizaLogger.success(
+                        `   Interact by mentioning @${user.profile.name} in threads or comments`
+                    );
+                }
+            );
         } catch (error) {
             elizaLogger.error(
                 "❌ [INIT] Failed to start Common client:",
@@ -85,15 +103,14 @@ export class CommonClient {
         }
     }
 
-    private async _handleMention(
-        req: Request,
-        res: Response,
-    ) {
+    private async _handleMention(req: Request, res: Response) {
         try {
             // TODO: verify Webhook signature using config.COMMON_WEBHOOK_SIGNING_KEY
 
             // Validate body
-            const { success, data: body } = AgentMentionedSchema.safeParse(req.body);
+            const { success, data: body } = AgentMentionedSchema.safeParse(
+                req.body
+            );
             if (success === false) {
                 return res.status(400).send({
                     error: "Invalid request body",
@@ -126,19 +143,18 @@ export class CommonClient {
                 );
             }
 
-            const augmentedMessage: z.infer<typeof AugmentedAgentMentionedSchema> = {
+            const augmentedMessage: z.infer<
+                typeof AugmentedAgentMentionedSchema
+            > = {
                 ...body,
                 full_object_text: content,
-            }
+            };
 
             await this.messageManager.handleMessage(augmentedMessage);
 
             res.status(200).send();
         } catch (error) {
-            elizaLogger.error(
-                "❌ [ERROR] Error processing request:",
-                error
-            );
+            elizaLogger.error("❌ [ERROR] Error processing request:", error);
             res.status(500).send({
                 error: "Internal server error",
             });
@@ -166,5 +182,5 @@ export const CommonClientInterface: Client = {
     },
     stop: async (runtime: IAgentRuntime) => {
         await runtime.clients.common.stop();
-    }
-}
+    },
+};
