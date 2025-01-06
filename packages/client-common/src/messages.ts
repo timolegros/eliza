@@ -22,16 +22,20 @@ import {CreateCommentResponse} from "@commonxyz/api-client/api";
 export class MessageManager {
     private readonly runtime: IAgentRuntime;
     private readonly commonApiClient: CommonApiClient;
+    // TODO: combine into a single Common user with type from common-client GetUser
     private readonly commonUserId: number;
+    private readonly commonProfileName: string;
 
     constructor(
         commonApiClient: CommonApiClient,
         runtime: IAgentRuntime,
-        commonUserId: number
+        commonUserId: number,
+        commonProfileName: string,
     ) {
         this.runtime = runtime;
         this.commonApiClient = commonApiClient;
         this.commonUserId = commonUserId;
+        this.commonProfileName = commonProfileName;
     }
 
     private async _shouldRespond(
@@ -155,7 +159,7 @@ export class MessageManager {
         const state = await this.runtime.composeState(memory, {
             commonClient: this.commonApiClient,
             commonMessage: message,
-            agentName: this.runtime.character.name,
+            agentName: this.commonProfileName,
         });
 
         if (!(await this._shouldRespond(message, state))) {
