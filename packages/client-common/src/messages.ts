@@ -48,12 +48,6 @@ export class MessageManager {
             return false;
         }
 
-        // TODO: disable this to enable longer conversations without mentioning the bot
-        // Agent not mentioned
-        if (!message.full_object_text.includes(this.commonUserId.toString())) {
-            return false;
-        }
-
         const context = composeContext({
             state,
             template:
@@ -130,6 +124,7 @@ export class MessageManager {
         message: z.infer<typeof AugmentedAgentMentionedSchema>
     ) {
         const {messageId, userId, roomId} = this._generateMemoryIds({ message });
+        elizaLogger.debug(`[Common Client] Handling message: ${messageId} (messageId) - ${userId} (userId) - ${roomId} (roomId)`);
 
         await this.runtime.ensureConnection(
             userId,

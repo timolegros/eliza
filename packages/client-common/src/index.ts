@@ -46,13 +46,16 @@ export class CommonClient {
 
             // TODO: fetch user once Common Api Client is published with the new route
             // const user = await this.commonApiClient.User.getUser();
-            const user = { id: parseInt(process.env.COMMON_USER_ID), profile: { name: "Eliza Dev 1" } };
+            const user = {
+                id: parseInt(process.env.COMMON_USER_ID),
+                profile: { name: "Eliza Dev 1" },
+            };
             this.commonUserId = user.id;
             this.messageManager = new MessageManager(
                 this.commonApiClient,
                 this.runtime,
                 this.commonUserId,
-                user.profile.name,
+                user.profile.name
             );
 
             const webhookPath = `/eliza/${user.id}`;
@@ -109,13 +112,16 @@ export class CommonClient {
             // TODO: verify Webhook signature using config.COMMON_WEBHOOK_SIGNING_KEY
 
             // Validate body
-            const { success, data: body, error } = AgentMentionedSchema.safeParse(
-                req.body
-            );
+            const {
+                success,
+                data: body,
+                error,
+            } = AgentMentionedSchema.safeParse(req.body);
             if (success === false) {
+                elizaLogger.warn('Invalid request body: ', error);
                 return res.status(400).send({
                     error: `Invalid request body`,
-                    schemaErrors: error
+                    schemaErrors: error,
                 });
             }
 
@@ -154,6 +160,9 @@ export class CommonClient {
 
             await this.messageManager.handleMessage(augmentedMessage);
 
+            elizaLogger.debug(
+                "Successfully handled message. Returning 200 status code."
+            );
             res.status(200).send();
         } catch (error) {
             elizaLogger.error("❌ [ERROR] Error processing request:", error);
