@@ -1,4 +1,4 @@
-import {CommonApiClient} from "@commonxyz/api-client";
+import {CommonApi, CommonApiClient} from "@commonxyz/api-client";
 import {
     Clients,
     composeContext, Content,
@@ -17,25 +17,20 @@ import {
     commonMessageHandlerTemplate,
     commonShouldRespondTemplate,
 } from "./templates.ts";
-import {CreateCommentResponse} from "@commonxyz/api-client/api";
 
 export class MessageManager {
     private readonly runtime: IAgentRuntime;
     private readonly commonApiClient: CommonApiClient;
-    // TODO: combine into a single Common user with type from common-client GetUser
-    private readonly commonUserId: number;
-    private readonly commonProfileName: string;
+    private readonly commonUser: CommonApi.GetUserResponseApiKey
 
     constructor(
         commonApiClient: CommonApiClient,
         runtime: IAgentRuntime,
-        commonUserId: number,
-        commonProfileName: string,
+        commonUser: CommonApi.GetUserResponseApiKey,
     ) {
         this.runtime = runtime;
         this.commonApiClient = commonApiClient;
-        this.commonUserId = commonUserId;
-        this.commonProfileName = commonProfileName;
+        this.commonUser = commonUser;
     }
 
     private async _shouldRespond(
@@ -43,7 +38,7 @@ export class MessageManager {
         state: State
     ) {
         // Don't respond to self
-        if (message.author_user_id === this.commonUserId) {
+        if (message.author_user_id === this.commonUser.id) {
             elizaLogger.debug("Skipping message from self");
             return false;
         }
@@ -93,13 +88,13 @@ export class MessageManager {
 
     private _generateMemoryIds({message, commentResponse}: {
         message?: z.infer<typeof AugmentedAgentMentionedSchema>,
-        commentResponse?: CreateCommentResponse
+        commentResponse?: CommonApi.CreateCommentResponse
     }) {
         if (message) {
             let userId = stringToUuid(
                 `${message.author_user_id}-${this.runtime.agentId}`
             );
-            if (message.author_user_id === this.commonUserId)
+            if (message.author_user_id === this.commonUser.id)
                 userId = this.runtime.agentId;
 
             return {
@@ -154,7 +149,7 @@ export class MessageManager {
         const state = await this.runtime.composeState(memory, {
             commonClient: this.commonApiClient,
             commonMessage: message,
-            agentName: this.commonProfileName,
+            agentName: this.commonUser.profile.name,
         });
 
         if (!(await this._shouldRespond(message, state))) {

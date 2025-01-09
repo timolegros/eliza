@@ -22,7 +22,6 @@ export class CommonClient {
     private readonly config: z.infer<typeof CommonEnvSchema>;
     private messageManager: MessageManager;
     private server: Server;
-    private commonUserId: number;
 
     constructor(runtime: IAgentRuntime) {
         elizaLogger.log("🚀 Initializing CommonClient...");
@@ -44,18 +43,13 @@ export class CommonClient {
         try {
             elizaLogger.log("Starting Common client...");
 
-            // TODO: fetch user once Common Api Client is published with the new route
-            // const user = await this.commonApiClient.User.getUser();
-            const user = {
-                id: parseInt(process.env.COMMON_USER_ID),
-                profile: { name: "Eliza Dev 1" },
-            };
-            this.commonUserId = user.id;
+            const user = await this.commonApiClient.user.getUser();
+            if (!("id" in user)) throw new Error(`${this.character.name} Common user not found`);
+
             this.messageManager = new MessageManager(
                 this.commonApiClient,
                 this.runtime,
-                this.commonUserId,
-                user.profile.name
+                user,
             );
 
             const webhookPath = `/eliza/${user.id}`;

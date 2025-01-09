@@ -550,8 +550,8 @@ importers:
   packages/client-common:
     dependencies:
       '@commonxyz/api-client':
-        specifier: ^2.1.1
-        version: 2.1.1(encoding@0.1.13)
+        specifier: ^2.1.2
+        version: 2.1.2(encoding@0.1.13)
       '@elizaos/core':
         specifier: workspace:*
         version: link:../core
@@ -3272,8 +3272,8 @@ packages:
     resolution: {integrity: sha512-gwRLBLra/Dozj2OywopeuHj2ac26gjGkz2cZ+86cTJOdtWfiRRr4+e77ZDAGc6MDWxaWheI+mAV5TLWWRwqrFg==}
     engines: {node: '>=v18'}
 
-  '@commonxyz/api-client@2.1.1':
-    resolution: {integrity: sha512-X6rwPN9Z3ueLPQo9pRJmBAaSxPNhU7W6+QT4Jn+EK578QFY3Ipnhj8nGTJILCdvOIlc/D0SFoHWzK+jY/p3CIw==}
+  '@commonxyz/api-client@2.1.2':
+    resolution: {integrity: sha512-50yXl58nqXpztdX4ORIGScfQUq2KBn60E1q2dpFKwJEMeKXOaMYo30S0aNu8ADLcr5Cj2K38w3CCAFSfV3y0qg==}
 
   '@coral-xyz/anchor-errors@0.30.1':
     resolution: {integrity: sha512-9Mkradf5yS5xiLWrl9WrpjqOrAV+/W2RQHDlbnAZBivoGpOs1ECjoDCkVk4aRG8ZdiFiB8zQEVlxf+8fKkmSfQ==}
@@ -21720,7 +21720,7 @@ snapshots:
     dependencies:
       chalk: 4.1.2
 
-  '@commonxyz/api-client@2.1.1(encoding@0.1.13)':
+  '@commonxyz/api-client@2.1.2(encoding@0.1.13)':
     dependencies:
       form-data: 4.0.1
       formdata-node: 6.0.3
