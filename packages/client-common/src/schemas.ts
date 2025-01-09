@@ -1,5 +1,16 @@
 import { z } from "zod";
 
+const stringToJSONSchema = z
+    .string()
+    .transform((str, ctx): z.infer<ReturnType<typeof JSON.parse>> => {
+        try {
+            return JSON.parse(str);
+        } catch {
+            ctx.addIssue({ code: "custom", message: "Invalid JSON" });
+            return z.NEVER;
+        }
+    });
+
 export const CommonEnvSchema = z.object({
     COMMON_API_KEY: z.string().min(1, "Common API key is required"),
     COMMON_WALLET_ADDRESS: z
@@ -7,12 +18,11 @@ export const CommonEnvSchema = z.object({
         .min(1, "Common wallet address is required"),
     COMMON_API_URL: z.string().optional(),
     COMMON_WEBHOOK_PORT: z.coerce.number().optional().default(3001),
-    COMMON_WEBHOOK_SIGNING_KEY: z
-        .string()
-        .optional()
+    COMMON_WEBHOOK_SIGNING_KEYS: stringToJSONSchema
+        .pipe(z.record(z.string(), z.string())).optional()
         .describe(
-            "The signing key used to verify the origin of Webhook requests"
-        ), // TODO: should be required
+            "A mapping of community ids to signing keys for validating webhook signatures"
+        ),
 });
 
 export const AgentMentionedSchema = z.object({

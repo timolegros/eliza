@@ -1,6 +1,6 @@
 import { elizaLogger, IAgentRuntime } from "@elizaos/core";
 import { z } from "zod";
-import {CommonEnvSchema} from "./schemas.ts";
+import { CommonEnvSchema } from "./schemas.ts";
 
 export function validateCommonConfig(runtime: IAgentRuntime) {
     try {
@@ -12,13 +12,14 @@ export function validateCommonConfig(runtime: IAgentRuntime) {
                 runtime.getSetting("COMMON_API_KEY") ||
                 process.env.COMMON_API_KEY,
             COMMON_API_URL:
-                runtime.getSetting("COMMON_API_URL") || process.env.COMMON_API_URL,
+                runtime.getSetting("COMMON_API_URL") ||
+                process.env.COMMON_API_URL,
             COMMON_WEBHOOK_PORT:
                 runtime.getSetting("COMMON_WEBHOOK_PORT") ||
                 process.env.COMMON_WEBHOOK_PORT,
-            COMMON_WEBHOOK_SIGNING_KEY:
-                runtime.getSetting("COMMON_WEBHOOK_SIGNING_KEY") ||
-                process.env.COMMON_WEBHOOK_SIGNING_KEY,
+            COMMON_WEBHOOK_SIGNING_KEYS:
+                runtime.getSetting("COMMON_WEBHOOK_SIGNING_KEYS") ||
+                process.env.COMMON_WEBHOOK_SIGNING_KEYS,
             COMMON_WALLET_ADDRESS:
                 runtime.getSetting("COMMON_WALLET_ADDRESS") ||
                 process.env.COMMON_WALLET_ADDRESS,
