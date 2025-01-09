@@ -70,6 +70,8 @@ export const formatMessages = ({
         .map((message: Memory) => {
             const messageContent = (message.content as Content).text;
             const messageAction = (message.content as Content).action;
+            // TODO: if the name used here does not match the username used to mention the bot
+            //  then conversation will not flow and LLM will decide to IGNORE replies
             const formattedName =
                 actors.find((actor: Actor) => actor.id === message.userId)
                     ?.name || "Unknown User";

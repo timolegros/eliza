@@ -617,6 +617,7 @@ export type Plugin = {
  * Available client platforms
  */
 export enum Clients {
+    COMMON = "common",
     DISCORD = "discord",
     DIRECT = "direct",
     TWITTER = "twitter",
@@ -719,6 +720,8 @@ export type Character = {
         discordMessageHandlerTemplate?: string;
         slackMessageHandlerTemplate?: string;
         slackShouldRespondTemplate?: string;
+        commonShouldRespondTemplate?: string;
+        commonMessageHandlerTemplate?: string;
     };
 
     /** Character biography */
